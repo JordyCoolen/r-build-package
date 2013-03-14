@@ -1,0 +1,90 @@
+#   Copyright 2013 Jordy Coolen
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+
+require (inlinedocs)
+
+new.pckge <- function 
+### Function create a new R package
+(Rscript, ##<< Input of Rscript
+ pckge, ##<< Give package name
+ setwork = getwd() ##<< Set path of working directory where Input Rscript is present and package folder will be made
+ ){
+  
+  ##setting working directory
+  setwd(setwork)
+  
+  ## Run this once to create package skeleton
+  ## After running, edit DESCRIPTION and NAMESPACE
+  package.skeleton(name = pckge, code_files = Rscript)  
+    
+  ### Output is a new installed package
+}
+  
+
+update.pckge <- function
+### Function to update a existing R packages
+(Rscript, ##<< Input of Rscript
+ pckge, ##<< Give package name
+ setwork = getwd() ##<< Set path of working directory where Input Rscript is present and package folder is present
+ ){
+  
+  ##setting working directory
+  setwd(setwork)
+  
+  ## Run this each time you want to rebuild the package (after code changes)
+  dir.create(paste(pckge,"/R", sep=""))
+  dir.create(paste(pckge,"/man", sep=""))
+  file.copy(Rscript, paste(pckge, "/R/", Rscript, sep=""), overwrite = T)
+  package.skeleton.dx(pckge)
+  system(paste("R CMD build ",pckge, sep=""))
+  
+  ## Check the package
+  system(paste("R CMD check ",pckge, sep=""))
+  
+  ### Output is a installed and Updated package
+}
+
+install.pckge <- function
+### package to update a existing R packages
+(pckge, ##<< Give package name
+ setwork = getwd() ##<< Set path of working directory where updated package is present
+){
+  
+  ##setting working directory
+  setwd(setwork)
+  
+  ## Run this to install the package
+  install.packages(paste(pckge,"_1.0.tar.gz", sep=""), lib="/usr/local/lib/R/site-library", repo=NULL, dependencies=T)
+  detach(paste("package:",pckge, sep=""), unload = T, character.only = TRUE)
+  library(pckge, character.only = TRUE)  
+  
+  ### Installs package  
+}
+
+updateinstall.pckge <- function
+### Package to update and install existing R packages
+(Rscript, ##<< Input of Rscript
+ pckge, ##<< Give package name
+ setwork = getwd() ##<< Set path of working directory where Input Rscript is present and package folder will be made
+){
+  ## Updates the package
+  update.pckge(Rscript, pckge, setwork)
+    
+  ## Run this to install the package
+  install.pckge(pckge, setwork)
+  
+  ### Installs and updates package  
+}
+
+
