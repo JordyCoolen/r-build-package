@@ -59,14 +59,15 @@ update.pckge <- function
 install.pckge <- function
 ### package to update a existing R packages
 (pckge, ##<< Give package name
- setwork = getwd() ##<< Set path of working directory where updated package is present
+ setwork = getwd(), ##<< Set path of working directory where updated package is present
+ lib="/usr/local/lib/R/site-library" ##<< Location for package install
 ){
   
   ##setting working directory
   setwd(setwork)
   
   ## Run this to install the package
-  install.packages(paste(pckge,"_1.0.tar.gz", sep=""), lib="/usr/local/lib/R/site-library", repo=NULL, dependencies=T)
+  install.packages(paste(pckge,"_1.0.tar.gz", sep=""), lib = lib, repo=NULL, dependencies=T)
   
   if(paste0("package:", pckge) %in% search()) {
     detach(paste0("package:", pckge), unload=T, character.only=T)

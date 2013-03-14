@@ -5,3 +5,4 @@
 RBuildPackage/man
 RBuildPackage/R
 *.tar.gz
+*.Rcheck

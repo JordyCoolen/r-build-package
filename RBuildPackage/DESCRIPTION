@@ -1,7 +1,7 @@
 Package: RBuildPackage
 Type: Package
 Title: Package to build install and update packages
-Version: 1.0
+Version: 1.1
 Date: 2013-03-14
 Author: Jordy Coolen and Thomas Kelder
 Maintainer: Jordy Coolen <jordy.coolen@tno.nl>
