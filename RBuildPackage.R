@@ -44,8 +44,8 @@ update.pckge <- function
   setwd(setwork)
   
   ## Run this each time you want to rebuild the package (after code changes)
-  dir.create(paste(pckge,"/R", sep=""))
-  dir.create(paste(pckge,"/man", sep=""))
+  dir.create(paste(pckge,"/R", sep=""), showWarnings = F)
+  dir.create(paste(pckge,"/man", sep=""), showWarnings = F)
   file.copy(Rscript, paste(pckge, "/R/", Rscript, sep=""), overwrite = T)
   package.skeleton.dx(pckge)
   system(paste("R CMD build ",pckge, sep=""))
@@ -69,7 +69,7 @@ install.pckge <- function
   install.packages(paste(pckge,"_1.0.tar.gz", sep=""), lib="/usr/local/lib/R/site-library", repo=NULL, dependencies=T)
   
   if(paste0("package:", pckge) %in% search()) {
-    detach(paste0("package:", pckge), unload=T)
+    detach(paste0("package:", pckge), unload=T, character.only=T)
     library(pckge, character.only=T)
   }
   
