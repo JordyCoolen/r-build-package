@@ -36,8 +36,7 @@ update.pckge <- function
 ### Function to update a existing R packages
 (Rscript, ##<< Input of Rscript
  pckge, ##<< Give package name
- setwork = getwd(), ##<< Set path of working directory where Input Rscript is present and package folder is present
- doCheck = T
+ setwork = getwd() ##<< Set path of working directory where Input Rscript is present and package folder is present
 ){
   
   ##setting working directory
@@ -50,10 +49,7 @@ update.pckge <- function
   package.skeleton.dx(pckge)
   system(paste("R CMD build ",pckge, sep=""))
   
-  ## Check the package
-  if(doCheck) system(paste("R CMD check ",pckge, sep=""))
-  
-  ### Output is a installed and Updated package
+  ### Output is a installed and Updated packages
 }
 
 install.pckge <- function
@@ -67,7 +63,9 @@ install.pckge <- function
   setwd(setwork)
   
   ## Run this to install the package
-  install.packages(paste(pckge,"_1.0.tar.gz", sep=""), lib = lib, repo=NULL, dependencies=T)
+  files = list.files(getwd(), paste0(pckge, ".+\\.tar.gz"))
+  latest = sort(files, decreasing=T)[1]
+  install.packages(latest, lib = lib, repo=NULL, dependencies=T)
   
   if(paste0("package:", pckge) %in% search()) {
     detach(paste0("package:", pckge), unload=T, character.only=T)
